@@ -1,3 +1,7 @@
+/** 
+ * 젠킨스 정보 추출 스크립트 
+ * */
+
 import axios from "axios";
 import ExcelJS from "exceljs";
 

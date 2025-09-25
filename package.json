@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/export.js",
-    "dev": "ts-node export.ts",
+    "start:jenkins": "node dist/jenkins-export.js",
+    "dev:jenkins": "ts-node jenkins-export.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
