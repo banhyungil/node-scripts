@@ -1,0 +1,23 @@
+{
+  "name": "node-scripts",
+  "version": "1.0.0",
+  "description": "node로 작성된 스크립트 모음",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/export.js",
+    "dev": "ts-node export.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,27 @@
+# =============================
+# General Node / JS
+# =============================
+node_modules/
+package-lock.json
+npm-debug.log*
+dist/
+
+
+
+# =============================
+# Logs & Temp
+# =============================
+logs/
+*.log
+*.tmp
+tmp/
+temp/
+
+# =============================
+# IDE / Editor
+# =============================
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
