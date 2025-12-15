@@ -5,8 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start:jenkins": "node dist/jenkins-export.js",
-    "dev:jenkins": "ts-node jenkins-export.ts",
+    "start": "node dist/jenkins-export.js",
+    "dev": "tsx jenkins-export.ts",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -16,8 +21,19 @@
     "exceljs": "^4.4.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.37.0",
     "@types/node": "^24.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.4.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.1"
   }
 }
