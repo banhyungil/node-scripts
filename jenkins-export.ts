@@ -36,6 +36,7 @@ interface BuildData {
     durationSec: string
     timestamp: string
     changes: string
+    consoleLog?: string
 }
 
 // Jenkins 설정
@@ -44,6 +45,26 @@ const jobName = 'BATCH_PROD'
 const JENKINS_URL = `http://${jenkinsServer}/job/${jobName}/api/json`
 const USERNAME = 'admin' // 필요 시
 const PASSWORD = 'AdminProd12*@!' // 필요 시
+
+// 콘솔 로그 가져오기 함수
+async function getConsoleLog(buildNumber: number): Promise<string> {
+    try {
+        const consoleUrl = `http://${jenkinsServer}/job/${jobName}/${buildNumber}/consoleText`
+        const response = await axios.get<string>(consoleUrl, {
+            auth: {
+                username: USERNAME,
+                password: PASSWORD,
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error(
+            `❌ 빌드 ${buildNumber} 콘솔 로그 가져오기 실패:`,
+            error instanceof Error ? error.message : String(error)
+        )
+        return 'Failed to fetch console log'
+    }
+}
 
 async function exportBuildHistory(): Promise<void> {
     try {
@@ -77,6 +98,15 @@ async function exportBuildHistory(): Promise<void> {
             })
         )
 
+        // 실패한 빌드에 대해 콘솔 로그 가져오기
+        console.log('📝 실패한 빌드의 콘솔 로그를 가져오는 중...')
+        for (const build of builds) {
+            if (build.result === 'FAILURE') {
+                console.log(`  - 빌드 ${build.number} 콘솔 로그 가져오는 중...`)
+                build.consoleLog = await getConsoleLog(build.number)
+            }
+        }
+
         // Excel Workbook 생성
         const workbook = new ExcelJS.Workbook()
         const sheet = workbook.addWorksheet('Build History')
@@ -87,6 +117,7 @@ async function exportBuildHistory(): Promise<void> {
             { header: 'Duration (sec)', key: 'durationSec', width: 15 },
             { header: 'Timestamp', key: 'timestamp', width: 20 },
             { header: 'Changes', key: 'changes', width: 60 },
+            { header: 'Console Log', key: 'consoleLog', width: 80 },
         ]
 
         builds.forEach((build: BuildData) => {
@@ -94,6 +125,11 @@ async function exportBuildHistory(): Promise<void> {
 
             // Changes 셀에 wrapText 적용
             row.getCell('changes').alignment = { wrapText: true }
+
+            // Console Log 셀에 wrapText 적용
+            if (build.consoleLog) {
+                row.getCell('consoleLog').alignment = { wrapText: true }
+            }
         })
 
         await workbook.xlsx.writeFile(
